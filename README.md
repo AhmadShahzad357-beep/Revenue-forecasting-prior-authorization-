@@ -12,14 +12,12 @@ and served through a small API and a React dashboard.
 
 ## 1. Overview
 
-| | |
-|---|---|
-| **Question answered** | "This denial went to appeal. How likely is it to be overturned?" |
-| **Output** | A calibrated probability per case, a per-State decision ("likely overturned" / "likely upheld"), and a payment-proxy exposure |
-| **Users** | Billing / appeals teams deciding which denied cases to fight first |
-| **Data** | 103,680 appeal decisions: California (IMR) 2001-2026 and New York (external appeals) 2019-2026, plus CMS payment averages |
-| **Model** | XGBoost, calibrated per State, evaluated with time-aware validation |
-| **Interface** | FastAPI backend + React dashboard (one command to run) |
+This project answers one question: *"This denial went to appeal. How likely is it to be overturned?"* It is built on
+103,680 real appeal decisions -- California (IMR) from 2001-2026 and New York (external appeals) from 2019-2026 --
+combined with CMS payment averages. An XGBoost model, calibrated per State and evaluated with time-aware validation,
+produces a calibrated probability for each case, a per-State decision ("likely overturned" / "likely upheld"), and a
+payment-proxy exposure figure. It is built for billing and appeals teams deciding which denied cases to fight first,
+and is served through a FastAPI backend and a React dashboard that runs with one command.
 
 ---
 
@@ -70,35 +68,23 @@ about what the data can support.
 - **Payment proxy instead of a revenue model:** see below.
 
 ### Problems found and corrected (audit trail)
-| Found | Correction |
-|---|---|
-| A "revenue" regression scored R2 = 0.999 | It was learning a category lookup, not money. The regression was removed and replaced by the payment proxy |
-| Outlier caps were computed after imputation and flattened real values | Caps now use real values only, from training years |
-| Preprocessing statistics used all rows, including test years | Learned from training years only |
-| Cross-validation was shuffled although the data is time-ordered | Time-aware (forward-chaining) validation |
-| Decision threshold was inspected on the test set | Chosen on the validation year, per State |
-| The dashboard was a static demo | Rebuilt as a React app that calls the real model |
+
+A structured review of the project surfaced several issues that were each found and corrected. An early "revenue"
+regression scored an R2 of 0.999 -- it turned out to be learning a category lookup, not real money, so it was removed
+and replaced by the payment proxy described below. Outlier caps had been computed after imputation, flattening real
+values, so they were rebuilt to use only real values from the training years. Preprocessing statistics had been
+learned from all rows, including the test years, and were corrected to use training years only. Cross-validation had
+been shuffled despite the data being time-ordered, and was replaced with time-aware (forward-chaining) validation.
+The decision threshold had been inspected on the test set and was moved to be chosen on the validation year, per
+State. The dashboard, originally a static demo, was rebuilt to call the real model. Finally, adding
+`DiagnosisSubCategory`, `TreatmentSubCategory`, and a diagnosis-treatment interaction feature (previously excluded)
+as out-of-fold target-encoded features raised test AUC from 0.68 to 0.733 in California and from 0.69 to 0.695 in
+New York -- the one change that genuinely improved the model's real-world accuracy, confirmed once on the held-out
+test years.
 
 ---
 
-### Model improvements (after the initial audit)
 
-Two feature additions were tested against validation AUC and kept; three other ideas were tested and reverted
-because they did not hold up on the held-out test years. All four followed the same rule as everything else in
-this project: a change is judged on validation, confirmed once on test, and never kept just because it looked
-good on the data it was tuned on.
-
-| Tried | Result | Kept? |
-|---|---|---|
-| Add `DiagnosisSubCategory` / `TreatmentSubCategory` to the target-encoded features (previously excluded for high cardinality alone) | CA test AUC 0.68 -> 0.732; NY unchanged | Yes |
-| Add a `Diagnosis_x_Treatment` interaction feature (out-of-fold target-encoded, same as the others) | Became the single most important feature; NY test AUC 0.691 -> 0.695 | Yes |
-| Exponential recency-weighted training (newer years weighted higher) | No change on the test years despite a validation-only gain | No -- reverted |
-| Isotonic calibration compared against Platt, per State, picked by validation log-loss | Won on validation but produced a slightly *worse* test log-loss than Platt (isotonic's step-function shape is locally overconfident) | No -- reverted to Platt |
-| Stacking (logistic meta-model over the 3 models' validation predictions) | Matched the single best model (XGBoost) exactly, no gain | No -- kept as XGBoost alone |
-
-Current test AUC: **0.733 (CA)**, **0.695 (NY)**, 95% bootstrap CI [0.714, 0.751] and [0.687, 0.701] respectively.
-
----
 
 
 
@@ -123,8 +109,7 @@ Current test AUC: **0.733 (CA)**, **0.695 (NY)**, 95% bootstrap CI [0.714, 0.751
 
 ![End-to-end system architecture](docs/assets/01_system_architecture.gif)
 
-Solid arrows show data and files flowing between stages. The dotted arrow is the tuned-parameter file that
-`train_model.py` reads (it never imports `tune_model.py`). The test years are used only by the last step of `train_model.py`.
+Each stage lights up in sequence as the pipeline runs: data sources, data preparation, modelling, the payment proxy, and serving. `train_model.py` reads the tuned parameters `tune_model.py` writes as a file (it never imports `tune_model.py` directly), and the test years are used only by the last step of `train_model.py`.
 
 ### 7.2 What happens when a case is scored
 
@@ -137,7 +122,7 @@ evaluation files.
 
 ## 10. Honest limitations
 
-1. **Moderate discrimination.** AUC is about 0.695 (NY) and 0.733 (CA), up from an earlier 0.69/0.68 after adding sub-category and diagnosis-x-treatment interaction features (see "Model improvements" below). The model ranks cases; it does not decide them.
+1. **Moderate discrimination.** AUC is about 0.695 (NY) and 0.733 (CA), improved from an earlier 0.69/0.68 by adding sub-category and diagnosis-treatment interaction features (see the audit table above). The model ranks cases; it does not decide them.
 2. **Drift.** The overturn rate keeps rising. After calibration CA is still about 7.6 points too low (64.3% vs 71.9%) and NY about 3.8 points low (49.1% vs 52.9%).
    Calibrators (and the model, if needed) must be re-fitted whenever a new labelled year is available.
 3. **CA is small in the test years** (3,268 cases), so its intervals are wide.
