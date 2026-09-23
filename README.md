@@ -81,6 +81,25 @@ about what the data can support.
 
 ---
 
+### Model improvements (after the initial audit)
+
+Two feature additions were tested against validation AUC and kept; three other ideas were tested and reverted
+because they did not hold up on the held-out test years. All four followed the same rule as everything else in
+this project: a change is judged on validation, confirmed once on test, and never kept just because it looked
+good on the data it was tuned on.
+
+| Tried | Result | Kept? |
+|---|---|---|
+| Add `DiagnosisSubCategory` / `TreatmentSubCategory` to the target-encoded features (previously excluded for high cardinality alone) | CA test AUC 0.68 -> 0.732; NY unchanged | Yes |
+| Add a `Diagnosis_x_Treatment` interaction feature (out-of-fold target-encoded, same as the others) | Became the single most important feature; NY test AUC 0.691 -> 0.695 | Yes |
+| Exponential recency-weighted training (newer years weighted higher) | No change on the test years despite a validation-only gain | No -- reverted |
+| Isotonic calibration compared against Platt, per State, picked by validation log-loss | Won on validation but produced a slightly *worse* test log-loss than Platt (isotonic's step-function shape is locally overconfident) | No -- reverted to Platt |
+| Stacking (logistic meta-model over the 3 models' validation predictions) | Matched the single best model (XGBoost) exactly, no gain | No -- kept as XGBoost alone |
+
+Current test AUC: **0.733 (CA)**, **0.695 (NY)**, 95% bootstrap CI [0.714, 0.751] and [0.687, 0.701] respectively.
+
+---
+
 
 
 ---
@@ -102,89 +121,14 @@ about what the data can support.
 
 ### 7.1 End-to-end system
 
-```mermaid
-flowchart LR
-    subgraph SRC["1. Data sources"]
-        S1["California IMR<br/>appeal decisions"]
-        S2["New York DFS<br/>external appeals"]
-        S3["CMS Medicare<br/>payment averages"]
-    end
-
-    subgraph PREP["2. Data preparation"]
-        P1["data_cleaning.py<br/>dedupe, unify labels,<br/>train-years-only statistics"]
-        P2["check_leakage_columns.py<br/>leakage and drift checks"]
-        P3["eda_core.py<br/>20 charts, effect sizes"]
-        P4["feature_engineering.py<br/>time split, encodings,<br/>fitted pipeline"]
-    end
-
-    subgraph MODEL["3. Modelling"]
-        M1["tune_model.py<br/>time-aware search"]
-        M2["train_model.py<br/>3 models, calibration,<br/>thresholds, test once"]
-        M3[("final_model.joblib<br/>predictions_val / test")]
-    end
-
-    subgraph MONEY["4. Payment proxy"]
-        R1["revenue_proxy.py<br/>probability x proxy amount"]
-    end
-
-    subgraph SERVE["5. Serving"]
-        A1["api.py - FastAPI<br/>predict, summary, trends, exposure"]
-        UI["React dashboard<br/>Overview, Case checker, Trends,<br/>Payment proxy, Model"]
-    end
-
-    U(("Appeals and<br/>billing team"))
-
-    S1 --> P1
-    S2 --> P1
-    S3 --> P1
-    P1 --> P2
-    P1 --> P3
-    P1 --> P4
-    P4 --> M1
-    P4 --> M2
-    M1 -. best parameters .-> M2
-    M2 --> M3
-    M3 --> R1
-    M3 --> A1
-    R1 --> A1
-    A1 <--> UI
-    UI --- U
-
-    classDef src fill:#e8f1fa,stroke:#2E86AB,color:#0b3954
-    classDef prep fill:#eaf7f5,stroke:#2A9D8F,color:#0b3d38
-    classDef model fill:#fff4e5,stroke:#F4A261,color:#5a3200
-    classDef serve fill:#fdeeec,stroke:#E63946,color:#5c0f16
-    classDef user fill:#f0f0f0,stroke:#555555,color:#222222
-    class S1,S2,S3 src
-    class P1,P2,P3,P4 prep
-    class M1,M2,M3,R1 model
-    class A1,UI serve
-    class U user
-```
+![End-to-end system architecture](docs/assets/01_system_architecture.gif)
 
 Solid arrows show data and files flowing between stages. The dotted arrow is the tuned-parameter file that
 `train_model.py` reads (it never imports `tune_model.py`). The test years are used only by the last step of `train_model.py`.
 
 ### 7.2 What happens when a case is scored
 
-```mermaid
-sequenceDiagram
-    actor User as Appeals team
-    participant UI as React dashboard
-    participant API as FastAPI api.py
-    participant FE as Fitted feature pipeline
-    participant M as XGBoost model
-    participant C as Per-State calibrator
-    User->>UI: Enter a denied case (State, diagnosis, treatment, ...)
-    UI->>API: POST /api/predict
-    API->>FE: Encode the case (same pipeline as training)
-    FE->>M: 37 features
-    M->>C: Raw probability
-    C->>API: Calibrated probability
-    API->>API: Compare with the State threshold, look up the payment proxy
-    API->>UI: Probability, decision, proxy, context, warnings
-    UI->>User: Show the result
-```
+![Case-scoring sequence](docs/assets/02_case_scoring_sequence.gif)
 
 The dashboard contains no numbers of its own: every value on screen comes from this request path or from the saved
 evaluation files.
@@ -193,8 +137,8 @@ evaluation files.
 
 ## 10. Honest limitations
 
-1. **Moderate discrimination.** AUC is about 0.69 (NY) and 0.68 (CA). The model ranks cases; it does not decide them.
-2. **Drift.** The overturn rate keeps rising. After calibration CA is still about 7 points too low (64.9% vs 71.9%).
+1. **Moderate discrimination.** AUC is about 0.695 (NY) and 0.733 (CA), up from an earlier 0.69/0.68 after adding sub-category and diagnosis-x-treatment interaction features (see "Model improvements" below). The model ranks cases; it does not decide them.
+2. **Drift.** The overturn rate keeps rising. After calibration CA is still about 7.6 points too low (64.3% vs 71.9%) and NY about 3.8 points low (49.1% vs 52.9%).
    Calibrators (and the model, if needed) must be re-fitted whenever a new labelled year is available.
 3. **CA is small in the test years** (3,268 cases), so its intervals are wide.
 4. **Two populations.** CA and NY differ in label schemes, years covered and overturn rate. Many treatments and plans exist in one State only, so State is partly mixed into the features. Report results per State.
@@ -210,7 +154,7 @@ evaluation files.
 ## 11. Conclusion
 
 The project answers a concrete, useful question with a model that has been tested honestly: on later years it never saw,
-it ranks denied cases clearly better than chance (AUC about 0.69), it is calibrated per State, and its payment proxy tracks
+it ranks denied cases clearly better than chance (AUC about 0.73 CA / 0.70 NY), it is calibrated per State, and its payment proxy tracks
 what actually happened to within about 5%. Equally important, the work found and removed two misleading results (a
 "revenue" model that only memorised a lookup table, and optimistic validation), and it states what the data cannot support.
 
