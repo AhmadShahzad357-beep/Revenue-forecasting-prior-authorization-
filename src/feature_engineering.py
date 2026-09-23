@@ -56,7 +56,7 @@ POSITIVE_CLASS = "Overturned"
 
 # ---------------- feature whitelist ----------------
 ONEHOT_COLS = ["State", "Gender", "DenialType", "CoverageType", "AgeRange", "ReviewSpeed_IMRType"]
-TARGETENC_COLS = ["Diagnosis_Primary", "Treatment_Primary", "HealthPlan"]
+TARGETENC_COLS = ["Diagnosis_Primary", "Treatment_Primary", "HealthPlan", "DiagnosisSubCategory", "TreatmentSubCategory", "Diagnosis_x_Treatment"]
 # Treatment_Count is NOT used: it only takes the values 1 and 2, so Treatment_HasMultiple = Treatment_Count - 1
 # exactly (perfectly collinear; the VIF report caught this).
 NUMERIC_COLS = ["Diagnosis_Count", "Diagnosis_HasMultiple", "Treatment_HasMultiple"]
@@ -85,7 +85,10 @@ NOT_USED_REASONS = {
     "DiagnosisCategory": "raw combo string (use Diagnosis_Primary)",
     "TreatmentCategory": "raw combo string (use Treatment_Primary)",
     "DiagnosisCategory_Full": "raw combo string", "TreatmentCategory_Full": "raw combo string",
-    "DiagnosisSubCategory": "high-cardinality, state-specific labels", "TreatmentSubCategory": "high-cardinality, state-specific labels",
+    # DiagnosisSubCategory / TreatmentSubCategory moved INTO TARGETENC_COLS (see above) --
+    # out-of-fold target encoding handles high cardinality safely, so excluding them by
+    # cardinality alone was overly conservative; try them and compare val AUC.
+
     "Is_Amended_Group": "constant (no conflicting duplicate CaseIDs)",
     "Treatment_Count": "identical information to Treatment_HasMultiple (only the values 1 and 2 occur)",
     "CMS_Avg_Bene_Avg_Risk_Scre": "State proxy (two values, one per State)",
@@ -107,6 +110,7 @@ def load_data(path) -> pd.DataFrame:
     if not path.exists():
         raise FileNotFoundError(f"Cleaned data not found: {path}\nRun data_cleaning.py first, or pass --data <path>.")
     df = pd.read_csv(path, low_memory=False)
+    df["Diagnosis_x_Treatment"] = df["Diagnosis_Primary"].astype(str) + " || " + df["Treatment_Primary"].astype(str)
     needed = set(ONEHOT_COLS + TARGETENC_COLS + NUMERIC_COLS + META_COLS)
     missing = sorted(needed - set(df.columns))
     if missing:

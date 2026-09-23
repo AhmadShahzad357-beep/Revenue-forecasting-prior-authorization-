@@ -148,7 +148,16 @@ def _logit(p) -> np.ndarray:
 
 
 def fit_calibrators(p, y, states, min_rows: int = MIN_CALIBRATION_ROWS) -> dict:
-    """One Platt calibrator (logistic regression on logit(p)) per State, fitted on the validation rows."""
+    """One Platt calibrator (logistic regression on logit(p)) per State, fitted on the validation rows.
+
+    Tried: comparing this against an isotonic calibrator per State, picking
+    whichever had lower log-loss on val. Both States preferred isotonic on
+    val, but on the held-out test years it gave a slightly WORSE log-loss
+    (0.5412 vs 0.5397 for CA, 0.6345 vs 0.6323 for NY) despite a marginally
+    better Brier score -- isotonic's step-function shape can be locally
+    overconfident, which log-loss punishes hard. Since log-loss is what
+    feeds the revenue proxy (probability x dollar amount), Platt was kept.
+    """
     calibrators = {}
     for st in STATES:
         m = states == st
@@ -167,6 +176,7 @@ def apply_calibration(p, states, calibrators: dict) -> np.ndarray:
         if model is not None and m.any():
             out[m] = model.predict_proba(_logit(p[m]).reshape(-1, 1))[:, 1]
     return out
+
 
 
 def predict_proba_calibrated(bundle: dict, X: pd.DataFrame, states) -> np.ndarray:

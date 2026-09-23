@@ -1,0 +1,10 @@
+feature,VIF,high_multicollinearity
+Diagnosis_Count,3.74356995763523,False
+Diagnosis_HasMultiple,3.6994196539756827,False
+Diagnosis_x_Treatment_TargetEnc,3.5536491375897907,False
+Treatment_Primary_TargetEnc,2.92819741611619,False
+DiagnosisSubCategory_TargetEnc,1.5712962283038001,False
+Diagnosis_Primary_TargetEnc,1.5622148557909143,False
+TreatmentSubCategory_TargetEnc,1.5511467665573426,False
+HealthPlan_TargetEnc,1.4790927160349177,False
+Treatment_HasMultiple,1.0088310242751402,False

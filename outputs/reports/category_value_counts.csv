@@ -1,0 +1,232 @@
+column,value,rows
+Diagnosis_Primary,Orthopedic/ Musculoskeletal,13928
+Diagnosis_Primary,Central Nervous System/ Neuromuscular Disorder,12159
+Diagnosis_Primary,Digestive System/ Gastrointestinal,9250
+Diagnosis_Primary,Cardiac/ Circulatory Problems,9199
+Diagnosis_Primary,Endocrine/ Metabolic/ Nutritional,8392
+Diagnosis_Primary,Mental Health,7787
+Diagnosis_Primary,Dental Problems,6203
+Diagnosis_Primary,Cancer,5854
+Diagnosis_Primary,Respiratory System,4513
+Diagnosis_Primary,Skin Disorders,4114
+Diagnosis_Primary,Infectious Disease,3095
+Diagnosis_Primary,Genitourinary/ Kidney Disorder,2932
+Diagnosis_Primary,Other,2206
+Diagnosis_Primary,Immunologic Disorders,1843
+Diagnosis_Primary,Pregnancy/ Childbirth,1738
+Diagnosis_Primary,Autism Spectrum,1684
+Diagnosis_Primary,Substance Abuse/ Addiction,1640
+Diagnosis_Primary,Ears/ Nose/ Throat,1530
+Diagnosis_Primary,Trauma/ Injuries,1027
+Diagnosis_Primary,Gynecological,986
+Diagnosis_Primary,Vision,977
+Diagnosis_Primary,Blood Disorder,933
+Diagnosis_Primary,Genetic Diseases,716
+Diagnosis_Primary,Foot Disorder,554
+Diagnosis_Primary,Chronic Pain Syndrome,193
+Diagnosis_Primary,Gender Dysphoria,143
+Diagnosis_Primary,COVID 19,50
+Diagnosis_Primary,Eating Disorders,34
+Treatment_Primary,Pharmacy,23420
+Treatment_Primary,Inpatient Hospital,23301
+Treatment_Primary,Home Health Care,8097
+Treatment_Primary,Diagnostic Testing (other than Radiology),6369
+Treatment_Primary,Dental/ Orthodontic Procedure,6100
+Treatment_Primary,Surgical Services,5405
+Treatment_Primary,Mental Health,4830
+Treatment_Primary,DME,3723
+Treatment_Primary,Pain Management,3274
+Treatment_Primary,Skilled Nursing Facility,2375
+Treatment_Primary,Orthopedic Proc,1677
+Treatment_Primary,Cancer Care,1622
+Treatment_Primary,Reconstr/Plast Proc,1309
+Treatment_Primary,Autism Related Treatment (including ABA),1171
+Treatment_Primary,Elect/Therm/Radfreq,1115
+Treatment_Primary,Diag/ MD Eval,776
+Treatment_Primary,Substance Abuse: Inpatient,740
+Treatment_Primary,Emergency Care/ Emergency Room,643
+Treatment_Primary,Radiation Therapy,527
+Treatment_Primary,Special Proc,499
+Treatment_Primary,Ear-Nose-Thro Proc,490
+Treatment_Primary,Mental Health: Inpatient,442
+Treatment_Primary,Other Thera Proc,414
+Treatment_Primary,Advanced Imaging Services (Including PET/ MRI/ CT),406
+Treatment_Primary,Genetic Testing,386
+Treatment_Primary,Physical Therapy,357
+Treatment_Primary,Acute Med Svc Inpt,341
+Treatment_Primary,OB/ GYN Services,322
+Treatment_Primary,Radiology Services (including Ultrasound),311
+Treatment_Primary,Inpatient Rehabilitation,274
+Treatment_Primary,Chiropractic Care,219
+Treatment_Primary,Nursing Services (including Private Duty Nursing),211
+Treatment_Primary,Vision Services,196
+Treatment_Primary,Neurosurgery Proc,171
+Treatment_Primary,Ambulance (Including Air Ambulance),162
+Treatment_Primary,Mental Health: Outpatient,158
+Treatment_Primary,Infertility Treatment,144
+Treatment_Primary,Lab Work/ Blood Tests,134
+Treatment_Primary,Cancer Screening,125
+Treatment_Primary,Mental Health: Residential,109
+Treatment_Primary,Urology Proc,105
+Treatment_Primary,Infusion Therapy,100
+Treatment_Primary,Orthotics,79
+Treatment_Primary,Diabetic Equipment/ Supplies/ Self-Management Education,78
+Treatment_Primary,Occupational Therapy,75
+Treatment_Primary,Ophthalmology Proc,65
+Treatment_Primary,Transportation,65
+Treatment_Primary,Speech Therapy,59
+Treatment_Primary,Substance Abuse Treatment: Residential,59
+Treatment_Primary,Chemotherapy,55
+Treatment_Primary,Skin Treatments,54
+Treatment_Primary,Prosthetics,47
+Treatment_Primary,Prev Health Screen,44
+Treatment_Primary,Drug Ad Oth Oral,42
+Treatment_Primary,Medical Supplies,37
+Treatment_Primary,Medicine Serv Proc,34
+Treatment_Primary,Not Applicable,31
+Treatment_Primary,Radio Proc,29
+Treatment_Primary,Oxygen/ Oxygen Treatments,26
+Treatment_Primary,Office Visit,20
+Treatment_Primary,Alcohol Drug Tmt,20
+Treatment_Primary,Maternity and Newborn Care,19
+Treatment_Primary,Substance Abuse: Outpatient,18
+Treatment_Primary,Nutritional Supplement,16
+Treatment_Primary,Hearing Aids,14
+Treatment_Primary,Cochlear Implants,13
+Treatment_Primary,Anesthesia,13
+Treatment_Primary,Eval and Mgmt,13
+Treatment_Primary,Palliative Care (End of Life),8
+Treatment_Primary,Stem Cell Transplant,8
+Treatment_Primary,Path Lab Proc,7
+Treatment_Primary,Enteral Formulas,7
+Treatment_Primary,Foot Care,6
+Treatment_Primary,Temp Codes,6
+Treatment_Primary,Podiatric Care,6
+Treatment_Primary,DME MACs,6
+Treatment_Primary,Hospice Care,5
+Treatment_Primary,Bone Growth Simulator,5
+Treatment_Primary,Assistant Surgeon,4
+Treatment_Primary,Acupuncture,4
+Treatment_Primary,Admin Misc Invest,3
+Treatment_Primary,MLTSS,3
+Treatment_Primary,Allergy Testing and Treatment,3
+Treatment_Primary,Category III Codes,2
+Treatment_Primary,Proc/Profess Serv,2
+Treatment_Primary,Bone Density Testing,2
+Treatment_Primary,Biofeedback,2
+Treatment_Primary,National Temp Codes,2
+Treatment_Primary,Med Surg Supplies,2
+Treatment_Primary,Ambulance Transport,1
+Treatment_Primary,Outpatient PPS,1
+Treatment_Primary,Prop Lab Analyses,1
+Treatment_Primary,Chemo Drugs,1
+Treatment_Primary,Prosthetic Proc,1
+Treatment_Primary,Est National Codes,1
+Treatment_Primary,Prescription Drug,1
+Treatment_Primary,Dialysis,1
+Treatment_Primary,Cyst Removal,1
+Treatment_Primary,Autologous Blood Banking,1
+Treatment_Primary,Immunizations,1
+Treatment_Primary,Sterilization Procedures,1
+HealthPlan,,42710
+HealthPlan,Fidelis Care,11665
+HealthPlan,"Healthfirst, Inc.",11317
+HealthPlan,Empire Healthchoice Assurance Inc.,3489
+HealthPlan,Metroplus Health Plan,3333
+HealthPlan,United Healthcare Plan of New York,2855
+HealthPlan,Anthem BlueCross Blue Shield,2773
+HealthPlan,Excellus,2704
+HealthPlan,Empire BlueCross BlueShield HealthPlus,2542
+HealthPlan,Oxford,2368
+HealthPlan,Anthem BlueCross BlueShield HealthPlus,2362
+HealthPlan,Aetna,1696
+HealthPlan,Centers Plan for Healthy Living,1597
+HealthPlan,CVS Caremark,1495
+HealthPlan,United Healthcare Ins. Co. of NY,1163
+HealthPlan,VNSNY CHOICE Health Plans,1142
+HealthPlan,Affinity Health Plan,711
+HealthPlan,HomeFirst/Elderplan,673
+HealthPlan,MVP Health Care,669
+HealthPlan,HIP Health Plan of New York,622
+HealthPlan,CIGNA Healthcare of NY,510
+HealthPlan,"ElderServe Health, Inc./DBA RiverSpring Health",476
+HealthPlan,VillageCareMAX,376
+HealthPlan,Oscar Insurance Company,349
+HealthPlan,Capital District Physicians' Health Plan Inc.,332
+HealthPlan,Highmark,329
+HealthPlan,"Integra MLTC, Inc.",323
+HealthPlan,Independent Health,318
+HealthPlan,"Senior Whole Health of New York, Inc",286
+HealthPlan,Aetna Better Health of New York,220
+HealthPlan,Univera Healthcare,211
+HealthPlan,"Molina Healthcare of New York, Inc.",179
+HealthPlan,Senior Health Partners,178
+HealthPlan,Hamaspik Choice MLTC Plan,158
+HealthPlan,GHI,148
+HealthPlan,Healthnow,111
+HealthPlan,Wellcare of NY,102
+HealthPlan,Rochester Area School Health Plan II Municipal Cooperative Health Benefit Plan,97
+HealthPlan,Community Blue,94
+HealthPlan,Empire Healthchoice HMO Inc.,89
+HealthPlan,ArchCare Community Life,89
+HealthPlan,Beacon Health Options,83
+HealthPlan,State Wide Schools Cooperative Health Plan Benefit Plan,82
+HealthPlan,Guardian Life Ins. Co.,80
+HealthPlan,EmblemHealth,73
+HealthPlan,AgeWell New York,64
+HealthPlan,"Amida Care, Inc.",47
+HealthPlan,Nippon Life Insurance Company,33
+HealthPlan,"Carelon Behavioral Health, Inc.",32
+HealthPlan,Metropolitan Life,30
+HealthPlan,"iCircle Services of the Finger Lakes, Inc.",29
+HealthPlan,Nascentia HealthOptions,23
+HealthPlan,Navitus Health Solutions,23
+HealthPlan,CenterLight Healthcare Inc.,23
+HealthPlan,Healthplex Ins. Co.,21
+HealthPlan,Putnam/Northern Westchester Health Benefits Consortium,20
+HealthPlan,Jefferson-Lewis School Employees Healthcare Plan,13
+HealthPlan,Greater Tompkins County - Municipal Cooperative Health Benefit Plan,13
+HealthPlan,Ameritas Life Insurance Company,12
+HealthPlan,YourCare Health Plan,12
+HealthPlan,Extended MLTC LLC,12
+HealthPlan,Montefiore Diamond Care,10
+HealthPlan,Principal Life Insurance Company,9
+HealthPlan,Catskill Area School Employee Benefit Plan,8
+HealthPlan,St. Lawrence-Lewis Health Benefits Consortium,8
+HealthPlan,EverCare,8
+HealthPlan,Wellfleet Insurance,6
+HealthPlan,"Crystal Run Health Insurance Company, Inc.",5
+HealthPlan,Physicians Mutual Insurance Company,5
+HealthPlan,ArchCare Senior Life,5
+HealthPlan,Sun Life and Health Insurance Co.,5
+HealthPlan,Steuben Area School Employees' Benefit Plan,3
+HealthPlan,Cayuga-Onondaga Area School Employees' Healthcare Plan,3
+HealthPlan,Prime HealthChoice LLC,2
+HealthPlan,Atlanta International Insurance Company,2
+HealthPlan,NSLIJ Care Connect,2
+HealthPlan,United Concordia Insurance Company of NY,2
+HealthPlan,Lincoln Life and Annuity Co. of New York,2
+HealthPlan,Orange-Ulster School Districts' Health Plan,2
+HealthPlan,Delta Dental of NY,2
+HealthPlan,Solstice Benefits,2
+HealthPlan,Dentcare Delivery Systems Inc.,1
+HealthPlan,Kalos Health,1
+HealthPlan,"Niagara Advantage Health Plan, LLC d/b/a Elderwood Health Plan",1
+DenialType,Medical Necessity,86228
+DenialType,Experimental/Investigational,12662
+DenialType,Formulary Exception,3939
+DenialType,Urgent Care,768
+DenialType,Step Therapy,77
+DenialType,Out-Of-Network Service,6
+AgeRange,50-59,27075
+AgeRange,60+,18879
+AgeRange,40-49,15982
+AgeRange,30-39,12857
+AgeRange,10-19,12504
+AgeRange,20-29,8794
+AgeRange,0-9,6904
+AgeRange,Unknown,685
+Gender,Female,58158
+Gender,Male,44655
+Gender,Unknown,685
+Gender,Other,182
