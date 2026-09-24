@@ -272,7 +272,14 @@ def predict(case: CaseIn):
         "ReviewSpeed_IMRType": values["review_speed"], "Diagnosis_Primary": values["diagnosis"],
         "Treatment_Primary": values["treatment"], "HealthPlan": values["health_plan"],
         "Diagnosis_Count": case.n_diagnoses, "Diagnosis_HasMultiple": int(case.n_diagnoses > 1),
-        "Treatment_HasMultiple": int(case.multiple_treatments)}])
+        "Treatment_HasMultiple": int(case.multiple_treatments),
+        # The case-checker form does not collect these two granular fields --
+        # 'Unknown' falls back to the target encoder's global mean, same as
+        # any unseen category at training/test time (see feature_engineering.py).
+        "DiagnosisSubCategory": "Unknown", "TreatmentSubCategory": "Unknown",
+        # Built the same way as feature_engineering.py's load_data(), so the
+        # interaction feature is consistent between training and live scoring.
+        "Diagnosis_x_Treatment": f'{values["diagnosis"]} || {values["treatment"]}'}])
 
     X = fe.transform(row, store.art)                       # the SAME fitted pipeline used in training
     raw = float(store.bundle["model"].predict_proba(X[store.bundle["features"]])[0, 1])
