@@ -1,8 +1,15 @@
-﻿data/
-/models/
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .venv/
-
 docs/PROJECT_DEFENSE_GUIDE.md
+
+# Data and models stay local, except the files the live demo needs
+data/*
+!data/interim/
+data/interim/*
+!data/interim/cleaned_dataset_final.csv
+/models/*
+!/models/final_model.joblib
+!/models/feature_pipeline.joblib
+.vercel/
