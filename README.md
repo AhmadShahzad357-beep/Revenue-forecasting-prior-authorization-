@@ -1,5 +1,7 @@
 # Prior-Authorization Appeal Outcome Model
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20Dashboard-2ea44f?style=for-the-badge)](https://revenue-forecasting-prior-authoriza.vercel.app)
+
 A machine-learning system that estimates the probability that a **denied** prior-authorization case will be
 **overturned** on appeal, so that appeal teams can put their effort where it is most likely to pay off.
 It is trained on real California and New York appeal decisions, tested on years the model never saw,
