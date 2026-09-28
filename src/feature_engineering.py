@@ -217,7 +217,7 @@ def encode_frame(df: pd.DataFrame, art: dict, te_values: dict | None = None) -> 
     for col, levels in art["onehot_levels"].items():
         for lvl in levels:
             parts[_dummy_name(col, lvl)] = (df[col] == lvl).astype("int8")
-    for col in TARGETENC_COLS:
+    for col in art["target_enc"]:
         enc = art["target_enc"][col]
         if te_values is not None:
             parts[f"{col}_TargetEnc"] = te_values[col].astype(float)
